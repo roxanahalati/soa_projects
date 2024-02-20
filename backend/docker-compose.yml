@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  rabbitmq:
+    image: "rabbitmq:management"
+    ports:
+      - "5672:5672"  # RabbitMQ default port
+      - "15672:15672"  # RabbitMQ management console
+
+  books-service:
+    build: ./books-service
+    ports:
+      - "3001:3001"
+    depends_on:
+      - rabbitmq
+
+  authors-service:
+    build: ./authors-service
+    ports:
+      - "3002:3002"
+    depends_on:
+      - rabbitmq
+
+  gateway-service:
+    build: ./gateway-service
+    ports:
+      - "3000:3000"
+    depends_on:
+      - books-service
+      - authors-service
