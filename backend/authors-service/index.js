@@ -23,6 +23,22 @@ app.post('/api/authors', (req, res) => {
   res.json(author);
 });
 
+// Update an existing author by ID
+app.put('/api/authors/:id', (req, res) => {
+  const authorId = parseInt(req.params.id);
+  const { name } = req.body;
+
+  const authorToUpdate = authors.find(author => author.id === authorId);
+
+  if (!authorToUpdate) {
+    return res.status(404).json({ error: 'Author not found' });
+  }
+
+  authorToUpdate.name = name;
+
+  res.json(authorToUpdate);
+});
+
 app.listen(PORT, () => {
   console.log(`Authors Service listening on port ${PORT}`);
 });

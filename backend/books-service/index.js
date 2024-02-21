@@ -22,9 +22,24 @@ app.post('/api/books', (req, res) => {
   const newBook = { id: books.length + 1, title, authorId };
   books.push(newBook);
 
-  // No RabbitMQ logic here
-
   res.json({ message: 'Book added successfully!', book: newBook });
+});
+
+// Update an existing book by ID
+app.put('/api/books/:id', (req, res) => {
+  const bookId = parseInt(req.params.id);
+  const { title, authorId } = req.body;
+
+  const bookToUpdate = books.find(book => book.id === bookId);
+
+  if (!bookToUpdate) {
+    return res.status(404).json({ error: 'Book not found' });
+  }
+
+  bookToUpdate.title = title;
+  bookToUpdate.authorId = authorId;
+
+  res.json(bookToUpdate);
 });
 
 app.listen(PORT, () => {

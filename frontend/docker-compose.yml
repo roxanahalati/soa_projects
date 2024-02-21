@@ -9,7 +9,7 @@ services:
   authors-app:
     build: ./authors-app
     ports:
-      - "5003:5002"
+      - "5003:5003"
 
   main-app:
     build: ./main-app
